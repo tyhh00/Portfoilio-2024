@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { MainNavbar } from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
+import Footer from "@/components/specific/footer";
 
 const inter = Inter({ subsets: ["latin"] });
 const quattrocento = Quattrocento({
@@ -33,6 +34,7 @@ export default function RootLayout({
             >
                 <MainNavbar/>
                 {children}
+                <Footer/>
             </ThemeProvider>
         </body>
     </html>

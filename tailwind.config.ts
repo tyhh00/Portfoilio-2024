@@ -74,10 +74,23 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        'gradient': {
+          to: { 'background-position': '200% center' },
+        },
+        'shimmer': {
+          from: {
+            "backgroundPosition": "0 0"
+          },
+          to: {
+            "backgroundPosition": "-200% 0"
+          }
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        'gradient': 'gradient 16s linear infinite',
+        'shimmer': "shimmer 2s linear infinite"
       },
     },
   },

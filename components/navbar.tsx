@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HoveredLink, Menu, MenuItem, ProductItem } from "@/components/ui/navbar-menu";
 import { cn } from "@/utils/cn";
+import { motion } from "framer-motion";
  
 export function MainNavbar() {
   return (
@@ -13,20 +14,49 @@ export function MainNavbar() {
  
 function Navbar({ className }: { className?: string }) {
   const [active, setActive] = useState<string | null>(null);
+  
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [visible, setVisible] = useState(true)
+
+  const handleScroll = () => {
+      const currentScrollPos = window.scrollY
+
+      if(currentScrollPos > prevScrollPos){
+          setVisible(false)
+      }else{
+          setVisible(true)
+      }
+
+      setPrevScrollPos(currentScrollPos)
+  }
+
+  useEffect( () => {
+      window.addEventListener('scroll', handleScroll);
+
+      return () => window.removeEventListener('scroll', handleScroll)
+  })
+
   return (
-    <div
+
+    <motion.div
+      animate={visible ? {opacity: 1, y:0} : {opacity:0, y:-20}}
+      transition={{
+        duration:0.25,
+        ease:"backInOut"
+      }}
       className={cn("fixed top-10 inset-x-0 max-w-2xl mx-auto z-50", className)}
     >
+      
       <Menu setActive={setActive}>
-        <MenuItem setActive={setActive} active={active} item="Services">
+        <MenuItem setActive={setActive} active={active} item="Hire">
           <div className="flex flex-col space-y-4 text-sm">
             <HoveredLink href="/web-dev">Web Development</HoveredLink>
-            <HoveredLink href="/interface-design">Interface Design</HoveredLink>
-            <HoveredLink href="/seo">Search Engine Optimization</HoveredLink>
-            <HoveredLink href="/branding">Branding</HoveredLink>
+            <HoveredLink href="/interface-design">Programming Tuition</HoveredLink>
+            <HoveredLink href="/seo">Autoclicking Software</HoveredLink>
+            <HoveredLink href="/branding">Trading Indicators</HoveredLink>
           </div>
         </MenuItem>
-        <MenuItem setActive={setActive} active={active} item="Products">
+        <MenuItem setActive={setActive} active={active} item="Projects">
           <div className="  text-sm grid grid-cols-2 gap-10 p-4">
             <ProductItem
               title="Algochurn"
@@ -54,7 +84,7 @@ function Navbar({ className }: { className?: string }) {
             />
           </div>
         </MenuItem>
-        <MenuItem setActive={setActive} active={active} item="Pricing">
+        <MenuItem setActive={setActive} active={active} item="Contact">
           <div className="flex flex-col space-y-4 text-sm">
             <HoveredLink href="/hobby">Hobby</HoveredLink>
             <HoveredLink href="/individual">Individual</HoveredLink>
@@ -63,6 +93,6 @@ function Navbar({ className }: { className?: string }) {
           </div>
         </MenuItem>
       </Menu>
-    </div>
+    </motion.div>
   );
 }
