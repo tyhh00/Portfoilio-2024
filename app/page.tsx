@@ -1,22 +1,16 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion"
 
-
-import TypewriterTitle from "@/components/specific/typewriter-title";
 import { HeroParallax } from "@/components/ui/hero-parralax";
-import { StickyScrollRevealMain } from "@/components/specific/sticky-scroll-main";
-import ServiceCard from "@/components/ui/service-card";
-
-
-
+import ServiceCardList from "@/components/specific/service-cards-list";
+import LampMain from "@/components/specific/lamp-main";
+import ServicesSpotlight from "@/components/specific/services-spotlight";
 
 export default function Home() {
   return (
     <main className=" ">
         {/** Hero Section **/}
         <HeroParallax products={products} />
-        
-        <ServiceCard/>
+        <ServiceCardList/>
 
     </main>
   );

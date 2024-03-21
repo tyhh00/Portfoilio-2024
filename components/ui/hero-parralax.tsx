@@ -91,7 +91,7 @@ export const HeroParallax = ({
             }}
             className=""
         >
-            <h1 className={"ml-[3vw] text-2xl md:text-3xl lg:text-4xl font-bold pt-8 pb-8 bg-clip-text text-transparent bg-[linear-gradient(to_right,theme(colors.green.300),theme(colors.orange.400),theme(colors.purple.400),theme(colors.yellow.200),theme(colors.purple.400),theme(colors.green.100),theme(colors.green.300))] bg-[length:200%_auto] animate-gradient"}>
+            <h1 className={"ml-[5vw] text-2xl md:text-3xl lg:text-4xl font-bold pt-8 pb-8 bg-clip-text text-transparent bg-[linear-gradient(to_right,theme(colors.green.300),theme(colors.orange.400),theme(colors.purple.400),theme(colors.yellow.200),theme(colors.purple.400),theme(colors.green.100),theme(colors.green.300))] bg-[length:200%_auto] animate-gradient"}>
                 My Projects
             </h1>
 
@@ -132,6 +132,10 @@ export const HeroParallax = ({
 };
 
 export const Header = () => {
+
+  var date = new Date();
+  var age = date.getFullYear()-2003;
+
   return (
     <div className="flex items-center justify-center min-w-[100%] min-h-[50vh]"  >
         <motion.div
@@ -180,7 +184,7 @@ export const Header = () => {
             <h1 className={" text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold pt-8"} style={{zIndex:2}}>
                 <TypewriterTitle/>
             </h1>
-            <p className="max-w-sm md:max-w-lg lg:max-w-2xl  text-sm sm:text-md md:text-base pt-4 text-gray-300" style={{zIndex:2}}>I build Software Applications, Full-Stack Websites, Games, and Financial Market Software. <br></br>I'm 21, check out my portfoilio 😎</p>
+            <p className="max-w-sm md:max-w-lg lg:max-w-2xl  text-sm sm:text-md md:text-base pt-4 text-gray-300" style={{zIndex:2}}>I build Software Applications, Full-Stack Websites, Games, and Financial Market Software. <br></br>I'm {age}, check out my portfoilio 😎</p>
         </motion.div>
     </div>
     
