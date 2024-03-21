@@ -31,7 +31,7 @@ export const ServiceCard =({
 
   }) => {
     const ref = useRef(null)
-    const isInView = useInView(ref, { margin: "0px 50px -50px 0px" , amount: 0.25});
+    const isInView = useInView(ref, { margin: "0px 50px -50px 0px" , amount: 0.5});
   return (
 
         <motion.div 
