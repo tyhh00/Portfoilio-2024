@@ -15,6 +15,7 @@ export const ServiceCard =({
     portfolioBtn,
     contactBtn,
     LTR,
+    inviewAmount,
     
   }: {
     title: string,
@@ -28,10 +29,11 @@ export const ServiceCard =({
     portfolioBtn: boolean;
     contactBtn: boolean;
     LTR: boolean;
+    inviewAmount: number;
 
   }) => {
     const ref = useRef(null)
-    const isInView = useInView(ref, { margin: "0px 50px -50px 0px" , amount: 0.5});
+    const isInView = useInView(ref, { margin: "0px 50px -50px 0px" , amount: inviewAmount});
   return (
 
         <motion.div 

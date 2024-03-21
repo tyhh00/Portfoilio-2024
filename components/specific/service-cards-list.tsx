@@ -23,6 +23,7 @@ function ServiceCardList() {
             portfolioBtn={true}
             contactBtn={true}
             LTR={true}
+            inviewAmount={0.25}
         />
 
         <ServiceCard 
@@ -38,6 +39,7 @@ function ServiceCardList() {
             portfolioBtn={true}
             contactBtn={true}
             LTR={false}
+            inviewAmount={0.55}
         />
 
         <ServiceCard 
@@ -53,6 +55,7 @@ function ServiceCardList() {
             portfolioBtn={true}
             contactBtn={true}
             LTR={true}
+            inviewAmount={0.55}
         />
 
         
@@ -69,6 +72,7 @@ function ServiceCardList() {
             portfolioBtn={true}
             contactBtn={true}
             LTR={false}
+            inviewAmount={0.55}
         />
     </div>
   )
