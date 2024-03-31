@@ -4,13 +4,21 @@ import { HeroParallax } from "@/components/ui/hero-parralax";
 import ServiceCardList from "@/components/specific/service-cards-list";
 import LampMain from "@/components/specific/lamp-main";
 import ServicesSpotlight from "@/components/specific/services-spotlight";
+import SkillsList from "@/components/specific/skills-list";
 
 export default function Home() {
   return (
-    <main className=" ">
+    <main className="overflow-hidden">
+
         {/** Hero Section **/}
         <HeroParallax products={products} />
+
+        {/** Freelance Services Section **/}
         <ServiceCardList/>
+
+        {/** Skills List Section **/}
+        <SkillsList/>
+
 
     </main>
   );

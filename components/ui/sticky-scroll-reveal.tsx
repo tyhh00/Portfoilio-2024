@@ -56,6 +56,19 @@ export const StickyScroll = ({
       className="h-[80vh] overflow-y-auto flex justify-center relative space-x-10 rounded-md bg-black  scroll-m-0 no-scrollbar"
       ref={ref}
     >
+      <motion.div
+        animate={{
+          
+        }}
+        className={cn(
+          "hidden lg:block h-60 w-80 rounded-md bg-white sticky top-10 overflow-hidden",
+          contentClassName
+        )}
+      >
+        
+        {/*content[activeCard].content ?? null*/}
+      </motion.div>
+
       <div className="div relative flex items-start px-4">
         <div className="max-w-2xl">
           {content.map((item, index) => (
@@ -87,17 +100,7 @@ export const StickyScroll = ({
           <div className="h-40" />
         </div>
       </div>
-      <motion.div
-        animate={{
-          background: linearGradients[activeCard % linearGradients.length],
-        }}
-        className={cn(
-          "hidden lg:block h-60 w-80 rounded-md bg-white sticky top-10 overflow-hidden",
-          contentClassName
-        )}
-      >
-        {content[activeCard].content ?? null}
-      </motion.div>
+
       <div className="min-h-[100vh]"></div>
     </motion.div>
   );

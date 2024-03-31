@@ -85,3 +85,8 @@
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+.bg-image {
+  object-fit: cover;
+  z-index: -5;
+}

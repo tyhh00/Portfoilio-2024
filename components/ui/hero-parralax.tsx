@@ -40,39 +40,39 @@ export const HeroParallax = ({
   const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
 
   const translateX = useSpring(
-    useTransform(scrollYProgress, [0.1, 0.6], [0, 600]),
+    useTransform(scrollYProgress, [0.1, 0.55], [0, 600]),
     springConfig
   );
   const translateXReverse = useSpring(
-    useTransform(scrollYProgress, [0.1, 0.6], [0, -600]),
+    useTransform(scrollYProgress, [0.1, 0.55], [0, -600]),
     springConfig
   );
   const rotateX = useSpring(
-    useTransform(scrollYProgress, [0.06, 0.2], [15, 0]),
+    useTransform(scrollYProgress, [0.03, 0.15], [15, 0]),
     springConfig
   );
   const opacity = useSpring(
-    useTransform(scrollYProgress, [0.06, 0.14], [0.2, 1]),
+    useTransform(scrollYProgress, [0.033, 0.14], [0.2, 1]),
     springConfig
   );
   const titleOpacity = useSpring(
-    useTransform(scrollYProgress, [0.165, 0.175], [0.0, 1]),
+    useTransform(scrollYProgress, [0.115, 0.125], [0.0, 1]),
     springConfig
   );
   const rotateZ = useSpring(
-    useTransform(scrollYProgress, [0.06, 0.2], [20, 0]),
+    useTransform(scrollYProgress, [0.03, 0.15], [20, 0]),
     springConfig
   );
 
   const translateY = useSpring(
-    useTransform(scrollYProgress, [0.06, 0.2], [-700, 400]),
+    useTransform(scrollYProgress, [0.03, 0.15], [-800, 600]),
     springConfig
   );
   
   return (
     <div
       ref={ref}
-      className="h-[250vh] md:h-[275vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d] bg-black"
+      className="min-h-[150vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d] bg-black"
     >
       <Header />
       <motion.div
@@ -91,9 +91,16 @@ export const HeroParallax = ({
             }}
             className=""
         >
-            <h1 className={"ml-[5vw] text-2xl md:text-3xl lg:text-4xl font-bold pt-8 pb-8 bg-clip-text text-transparent bg-[linear-gradient(to_right,theme(colors.green.300),theme(colors.orange.400),theme(colors.purple.400),theme(colors.yellow.200),theme(colors.purple.400),theme(colors.green.100),theme(colors.green.300))] bg-[length:200%_auto] animate-gradient"}>
-                My Projects
-            </h1>
+            <div className="pb-40">
+              <h1 className={"text-center text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold bg-clip-text text-transparent bg-[linear-gradient(to_right,theme(colors.green.300),theme(colors.orange.400),theme(colors.purple.400),theme(colors.yellow.200),theme(colors.purple.400),theme(colors.green.100),theme(colors.green.300))] bg-[length:200%_auto] animate-gradient"}>
+                      My Projects
+              </h1>
+              <div className="min-w-[100%] text-center  text-md sm:text-base md:text-lg mt-4 text-gray-300 flex items-center justify-center">
+                  <div className="max-w-[80%] md:max-w-[50%]">
+                      <p className="">A variety of Unity Games, Full-Stack websites, Algo Trading, Autoclickers and more.</p>
+                  </div>
+              </div>
+            </div>
 
         </motion.div>
         
@@ -117,7 +124,7 @@ export const HeroParallax = ({
             />
           ))}
         </motion.div>
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-4 sm:space-x-8 md:space-x-12 lg:space-x-20 ">
+        <motion.div className="min-h-[80px] flex flex-row-reverse space-x-reverse space-x-4 sm:space-x-8 md:space-x-12 lg:space-x-20 pb-[600px]">
           {thirdRow.map((product) => (
             <ProductCard
               product={product}
@@ -184,7 +191,7 @@ export const Header = () => {
             <h1 className={" text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold pt-8"} style={{zIndex:2}}>
                 <TypewriterTitle/>
             </h1>
-            <p className="max-w-sm md:max-w-lg lg:max-w-2xl  text-sm sm:text-md md:text-base pt-4 text-gray-300" style={{zIndex:2}}>I build Software Applications, Full-Stack Websites, Games, and Financial Market Software. <br></br>I'm {age}, check out my portfoilio 😎</p>
+            <p className="max-w-sm md:max-w-lg lg:max-w-2xl  text-sm sm:text-md md:text-base pt-4 text-gray-200" style={{zIndex:2}}>Based in Singapore, I build Software Applications, Full-Stack Websites, Games, and Financial Market Software. <br></br>I'm {age}, check out my portfoilio 😎</p>
         </motion.div>
     </div>
     

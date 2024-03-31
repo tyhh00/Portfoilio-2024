@@ -35,7 +35,7 @@ export const ServiceCard =({
 
   }) => {
     const ref = useRef(null)
-    const isInView = useInView(ref, { margin: "0px 50px -50px 0px" , amount: inviewAmount});
+    const isInView = useInView(ref, { margin: "0px 30px -30px 0px" , amount: inviewAmount});
     var iconKey = 1;
   return (
 
@@ -80,9 +80,16 @@ export const ServiceCard =({
                         ease: "circOut"
                     }}
                 >
-                    <h1 className={(LTR ? "md:ml-[7vw]" : "md:ml-[7vw] md:mr-[7vw]" )+ " max-w-fit text-2xl md:text-3xl lg:text-4xl font-bold "}>
-                        {title}
-                    </h1>
+                    <motion.h1
+                        initial={{
+                            x: LTR? -400:400
+                        }}
+                        animate={{
+                            x: isInView ? 0 : (LTR? -400:400)
+                        }}
+                        className={(LTR ? "md:ml-[7vw]" : "md:ml-[7vw] md:mr-[7vw]" )+ " max-w-fit text-2xl md:text-3xl lg:text-4xl font-bold "}>
+                            {title}
+                    </motion.h1>
                     <div className={LTR ? "md:ml-[9vw]" : "md:ml-[9vw] md:mr-[9vw]"}>
                         <p className="max-w-sm md:max-w-lg lg:max-w-2xl  text-sm sm:text-md md:text-base pt-2 text-gray-300">
                             {description}
@@ -195,8 +202,8 @@ export const MotionImageDisplay = ({
                 rotateZ: LTR ? 10 : -10
             }}
             animate={{
-                translateY:[0,10,0],
-                translateX:[0,0,0],
+                translateY: shown && [0,10,0],
+                translateX: shown && [0,0,0],
             }}
             transition={{ repeat: Infinity, duration: 2 }}
             >
