@@ -6,6 +6,7 @@ import { MainNavbar } from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import Footer from "@/components/specific/footer";
 
+
 const inter = Inter({ subsets: ["latin"] });
 const quattrocento = Quattrocento({
     subsets: ["latin"],
@@ -25,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-        <body className={muli.className}>
+        <body className={muli.className + ""}>
             <ThemeProvider
                 attribute="class"
                 defaultTheme="dark"

@@ -6,18 +6,28 @@ import LampMain from "@/components/specific/lamp-main";
 import ServicesSpotlight from "@/components/specific/services-spotlight";
 import SkillsList from "@/components/specific/skills-list";
 
+
+import { ReactLenis, useLenis } from '@studio-freight/react-lenis'
+
 export default function Home() {
   return (
-    <main className="overflow-hidden">
+    
+    <main className="overflow-hidden scrollbar scrollbar-none scrollbar-track-transparent">
+
+          <ReactLenis root>
+            { /* content */ }
+          </ReactLenis>
 
         {/** Hero Section **/}
         <HeroParallax products={products} />
 
+        {/** Skills List Section **/}
+        <SkillsList/>
+
         {/** Freelance Services Section **/}
         <ServiceCardList/>
 
-        {/** Skills List Section **/}
-        <SkillsList/>
+
 
 
     </main>

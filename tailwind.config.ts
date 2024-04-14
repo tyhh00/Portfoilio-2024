@@ -26,6 +26,7 @@ const config = {
     },
     extend: {
       colors: {
+        'matteyellow': '#62583f',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -139,6 +140,7 @@ const config = {
       );
     },
     require("tailwindcss-animate"),
+    require('tailwind-scrollbar'),
   ],
 
 } satisfies Config

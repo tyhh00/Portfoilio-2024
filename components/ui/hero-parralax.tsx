@@ -65,7 +65,7 @@ export const HeroParallax = ({
   );
 
   const translateY = useSpring(
-    useTransform(scrollYProgress, [0.03, 0.15], [-800, 600]),
+    useTransform(scrollYProgress, [0.03, 0.15], [-800, 400]),
     springConfig
   );
   
@@ -93,11 +93,11 @@ export const HeroParallax = ({
         >
             <div className="pb-40">
               <h1 className={"text-center text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold bg-clip-text text-transparent bg-[linear-gradient(to_right,theme(colors.green.300),theme(colors.orange.400),theme(colors.purple.400),theme(colors.yellow.200),theme(colors.purple.400),theme(colors.green.100),theme(colors.green.300))] bg-[length:200%_auto] animate-gradient"}>
-                      My Projects
+                     My Projects
               </h1>
               <div className="min-w-[100%] text-center  text-md sm:text-base md:text-lg mt-4 text-gray-300 flex items-center justify-center">
                   <div className="max-w-[80%] md:max-w-[50%]">
-                      <p className="">A variety of Unity Games, Full-Stack websites, Algo Trading, Autoclickers and more.</p>
+                      <p className=""></p>
                   </div>
               </div>
             </div>
@@ -191,7 +191,7 @@ export const Header = () => {
             <h1 className={" text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold pt-8"} style={{zIndex:2}}>
                 <TypewriterTitle/>
             </h1>
-            <p className="max-w-sm md:max-w-lg lg:max-w-2xl  text-sm sm:text-md md:text-base pt-4 text-gray-200" style={{zIndex:2}}>Based in Singapore, I build Software Applications, Full-Stack Websites, Games, and Financial Market Software. <br></br>I'm {age}, check out my portfoilio 😎</p>
+            <p className="max-w-sm md:max-w-lg lg:max-w-2xl  text-sm sm:text-md md:text-base pt-4 text-gray-200" style={{zIndex:2}}>Hey there! I'm {age} this year. I build software applications, full stack websites, games, and quantitative trading software. I'm based in Singapore</p>
         </motion.div>
     </div>
     
