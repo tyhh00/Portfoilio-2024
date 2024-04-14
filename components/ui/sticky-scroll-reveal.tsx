@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef } from "react";
-import { useMotionValueEvent, useScroll } from "framer-motion";
+import { useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
 import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
@@ -23,8 +23,8 @@ export const StickyScroll = ({
   const [activeCard, setActiveCard] = React.useState(0);
   const ref = useRef<any>(null);
   const { scrollYProgress } = useScroll({
-    container: ref,
-    offset: ["start start", "end start"],
+    target: ref,
+    offset: ["start start", "end end"],
   });
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -32,16 +32,24 @@ export const StickyScroll = ({
     
   });
 
+  const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
+
+  const translateX = useSpring(
+    useTransform(scrollYProgress, [0.1, 0.55], [0, 600]),
+    springConfig
+  );
 
   return (
     <motion.div
-      
-      className="h-[100vh] overflow-y-auto flex justify-center relative  rounded-md scroll-m-0 no-scrollbar pt-12 "
+      style={{
+        translateX,
+      }}
+      className="min-h-[100vh] flex justify-center relative rounded-md pt-12 pb-[300vh]"
       ref={ref}
     >
       <div className="space-y-20" >
 
-        <div className="  border-blue-500 border-l-4 rounded-t-3xl rounded-b-lg  bg-neutral-200 drop-shadow-2xl min-h-[30vh] my-8 w-[85vw]">
+        <div className=" border-blue-500 border-l-4 rounded-t-3xl rounded-b-lg  bg-neutral-200 drop-shadow-2xl min-h-[30vh] my-8 w-[85vw]">
           <div className="space-y-10 lg:space-y-0 lg:flex items-center md:gap-10 lg:gap-20 ml-[4vw] mr-[4vw]">
             
             <div className="lg:h-[30vh] flex items-center">
