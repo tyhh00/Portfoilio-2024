@@ -71,7 +71,7 @@ function ServiceCardList() {
                 </div>
             </div>
 
-            <div className="justify-center items-center flex pt-24 gap-3">
+            <div className="justify-center items-center flex pt-16 gap-3">
                 <AnimatePresence>
                     {!isVisible && (
                         <motion.button

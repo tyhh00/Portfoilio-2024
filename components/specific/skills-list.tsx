@@ -15,7 +15,7 @@ function SkillsList() {
 
 
   return (
-    <div className="pt-52 bg-white">
+    <div className="pt-36 bg-white">
         <h1 className={"text-center text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-black"}>
                 Skills
         </h1>

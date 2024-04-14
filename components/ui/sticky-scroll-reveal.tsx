@@ -39,16 +39,18 @@ export const StickyScroll = ({
   const initOffset = 100;
   const translateY1 = useMotionValue(initOffset);
   const translateY2 = useMotionValue(1000);
+  const translateY3 = useMotionValue(2000);
   const opacity1 = useMotionValue(1);
+  const opacity2 = useMotionValue(1);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     console.log("Latest: " + latest);
     translateY1.set(latest * (height * 0.75) + initOffset);
 
+    //Transition1-2 Animation
     var trans1Max = 1000
-    var transition1 = latest * 1.5 * trans1Max;
+    var transition1 = latest * 2.5 * trans1Max;
     
-
     translateY2.set(translateY1.get() + trans1Max - ( transition1 > trans1Max ? trans1Max : transition1));
     
     //Opacity1 Animation
@@ -57,6 +59,23 @@ export const StickyScroll = ({
     {
       opacity1.set(diff * 0.004);
     }
+
+
+    //Transition2-3 Animation
+    var trans2Max = 2000
+    var transition2 = latest * 2.5 * trans2Max - translateY2.get();
+    
+    translateY3.set(translateY2.get() + trans2Max - ( transition2 > trans2Max ? trans2Max : transition2));
+    
+    //Opacity2 Animation
+    var diff = translateY3.get() - translateY2.get();
+    if(diff < 250) 
+    {
+      opacity1.set(diff * 0.004);
+    }
+    
+
+    
 
     
     
@@ -76,7 +95,7 @@ export const StickyScroll = ({
             left: 0,
             right: 0
           }}
-          className="absolute mx-auto border-blue-500 border-l-4 rounded-t-3xl rounded-b-lg  bg-neutral-200 drop-shadow-2xl min-h-[30vh] my-8 w-[85vw]">
+          className="absolute mx-auto border-blue-500 border-l-4 rounded-t-3xl rounded-b-lg  bg-neutral-200 sm:drop-shadow-2xl min-h-[30vh] my-8 w-[85vw]">
           <div className="space-y-10 lg:space-y-0 lg:flex items-center md:gap-10 lg:gap-20 ml-[4vw] mr-[4vw]">
             
             <div className="lg:h-[30vh] flex items-center">
@@ -122,15 +141,17 @@ export const StickyScroll = ({
         <motion.div 
           style={{
             translateY: translateY2,
-            left: 100
+            opacity: opacity2,
+            left: 0,
+            right: 0,
           }}
 
 
-          className="absolute   border-blue-500 border-l-4 rounded-t-3xl rounded-b-lg  bg-neutral-200 drop-shadow-2xl min-h-[30vh] my-8 w-[85vw]">
+          className="absolute mx-auto  border-blue-500 border-l-4 rounded-t-3xl rounded-b-lg  bg-neutral-200 sm:drop-shadow-2xl min-h-[30vh] my-8 w-[85vw]">
           <div className="space-y-10 lg:space-y-0 lg:flex items-center md:gap-10 lg:gap-20 ml-[4vw] mr-[4vw]">
             
             <div className="lg:h-[30vh] flex items-center">
-              <p className="lg:mt-0 mt-20 text-matteyellow font-bold text-5xl">WEB DEVELOPMENT</p>
+              <p className="lg:mt-0 mt-20 text-matteyellow font-bold text-5xl">WEB DEVELOPMENT 2</p>
             </div>
 
             <div>
@@ -151,15 +172,16 @@ export const StickyScroll = ({
 
         <motion.div 
         style={{
-          translateY: translateY2,
+          translateY: translateY3,
           
-          left: 100
+          left: 0,
+          right: 0,
         }}
-        className="absolute  border-red-500 border-l-4 rounded-t-3xl rounded-b-lg  bg-neutral-200 drop-shadow-2xl min-h-[30vh] my-8 w-[85vw]">
+        className="absolute mx-auto border-red-500 border-l-4 rounded-t-3xl rounded-b-lg  bg-neutral-200 sm:drop-shadow-2xl min-h-[30vh] my-8 w-[85vw]">
           <div className="space-y-10 lg:space-y-0 lg:flex items-center md:gap-10 lg:gap-20 ml-[4vw] mr-[4vw]">
             
             <div className="lg:h-[30vh] flex items-center">
-              <p className="lg:mt-0 mt-20 text-matteyellow font-bold text-5xl">WEB DEVELOPMENT</p>
+              <p className="lg:mt-0 mt-20 text-matteyellow font-bold text-5xl">WEB DEVELOPMENT 3</p>
             </div>
 
             <div>
