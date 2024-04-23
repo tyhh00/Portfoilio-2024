@@ -68,6 +68,13 @@ export const HeroParallax = ({
     useTransform(scrollYProgress, [0.03, 0.15], [-800, 400]),
     springConfig
   );
+
+  const opacitySocials = useSpring(
+    useTransform(scrollYProgress, [0.2, 0.21], [1.0, 0]),
+    springConfig
+  );
+
+
   
   return (
     <div
@@ -192,6 +199,8 @@ export const Header = () => {
                 <TypewriterTitle/>
             </h1>
             <p className="max-w-sm md:max-w-lg lg:max-w-2xl  text-sm sm:text-md md:text-base pt-4 text-gray-200" style={{zIndex:2}}>Hey there! I'm {age} this year. I build software applications, full stack websites, games, and quantitative trading software. I'm based in Singapore</p>
+            
+
         </motion.div>
     </div>
     

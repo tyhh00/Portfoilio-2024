@@ -12,8 +12,8 @@
     "@expo-google-fonts/quattrocento-sans": "^0.2.3",
     "@studio-freight/react-lenis": "^0.0.47",
     "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.0",
-    "framer-motion": "^11.0.14",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.1.7",
     "lucide-react": "^0.358.0",
     "mini-svg-data-uri": "^1.4.4",
     "muli": "^0.20.2208544",
@@ -22,7 +22,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-intersection-observer": "^9.8.1",
-    "tailwind-merge": "^2.2.2",
+    "simplex-noise": "^4.0.1",
+    "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {

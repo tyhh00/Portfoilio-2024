@@ -3,10 +3,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from 'next/navigation';
  
 const transition = {
   type: "spring",
-  mass: 0.5,
+  mass: 0.3,
   damping: 11.5,
   stiffness: 100,
   restDelta: 0.001,
@@ -18,14 +19,17 @@ export const MenuItem = ({
   active,
   item,
   children,
+  href,
 }: {
   setActive: (item: string) => void;
   active: string | null;
   item: string;
   children?: React.ReactNode;
+  href: string;
 }) => {
+  const router = useRouter();
   return (
-    <div onMouseEnter={() => setActive(item)} className="relative ">
+    <div onMouseEnter={() => setActive(item)} onClick={() => router.push(href)} className="relative ">
       <motion.p
         transition={{ duration: 0.3 }}
         className="cursor-pointer text-black hover:opacity-[0.9] dark:text-white"
@@ -43,11 +47,11 @@ export const MenuItem = ({
               <motion.div
                 transition={transition}
                 layoutId="active" // layoutId ensures smooth animation
-                className="bg-white dark:bg-black backdrop-blur-sm rounded-2xl overflow-hidden border border-black/[0.2] dark:border-white/[0.2] shadow-xl"
+                className={"bg-white dark:bg-black backdrop-blur-sm rounded-2xl overflow-hidden border border-black/[0.2] dark:border-white/[0.2] shadow-xl "}
               >
                 <motion.div
                   layout // layout ensures smooth animation
-                  className="w-max h-full p-4"
+                  className={children == null ? "rounded-none w-[2rem] h-[0.25vh] shadow-none backdrop-blur-none dark:border-black" : "w-max h-full p-4" }
                 >
                   {children}
                 </motion.div>
@@ -70,7 +74,7 @@ export const Menu = ({
   return (
     <nav
       onMouseLeave={() => setActive(null)} // resets the state
-      className="relative rounded-full boder border-transparent dark:bg-black dark:border-white/[0.2] bg-white shadow-input flex justify-center space-x-4 px-8 py-6 "
+      className={children == null ? "" : "relative boder border-transparent rounded-2xl dark:bg-black dark:border-white/[0.2] bg-white shadow-input flex justify-center space-x-4 px-8 py-6 "}
     >
       {children}
     </nav>
