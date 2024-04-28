@@ -10,6 +10,8 @@ import prft_ecom_hp from "@/images/portfoilio/ecommerce/ecommerce_itemshowcase.j
 
 import { inView } from "framer-motion"
 
+import { ReactLenis, useLenis } from '@studio-freight/react-lenis'
+
 type Year = {
     yearIDinDecsending: number;
     yearTitleText: string | JSX.Element;
@@ -33,15 +35,28 @@ type AnimationYearSequence = {
     animValue: MotionValue;
 }
 
+type YearWidthAllocated = {
+    yr: number;
+    width: number;
+}
+
 function PortfoilioHero({yearsList}: Props) {
     const [height, setHeight] = useState(0);
     const [width, setWidth] = useState(0);
     const ref = useRef<any>(null);
 
-    var yearanimations : Array<AnimationYearSequence> = []
-    var yearInView: [];
+    const [lockScroll, setLockedScroll] = useState(false);
+    
+    var lenis = useLenis((e) => {
+        if(lockScroll)  e.stop();
+        else e.start();
+      });
+
+    var yearanimations : Array<AnimationYearSequence> = [];
+    var yearwidthallocation : Array<YearWidthAllocated> = [];
+    
     var cardsList : Array<Card> = [];
-    var yearOffset = 0;
+
     yearsList.map((year) => { 
         yearanimations.push( 
             {yr: year.yearIDinDecsending, 
@@ -49,11 +64,17 @@ function PortfoilioHero({yearsList}: Props) {
             animValue: motionValue(0)}
         ); 
 
+        yearwidthallocation.push({
+            yr: year.yearIDinDecsending,
+            width: 0,
+        })
+
         year.cards.forEach((card) => {
             cardsList.push(card);
         })
     });
     const [yearAnims, setYearAnims] = useState(yearanimations);
+    const [yearWidthAllocation, setYearWidthAllocation] = useState(yearwidthallocation);
 
     const [year, setYear] = useState(yearsList[0].yearIDinDecsending)
     const [cards, setCards] = useState(yearsList[0].cards)
@@ -96,19 +117,152 @@ function PortfoilioHero({yearsList}: Props) {
     );
 
     const cardScroll = useMotionValue(0);
+    const [cardScrollOffset, setCardScrollOffset] = useState(0);
+    const cardOpacity = useMotionValue(0);
 
-    function yearExit() {
+    animate(cardOpacity, 1, { duration: 2.0 });
+
+    function changeYear(up: boolean) {
+        if(up == true) {
+            if(yearsList.find((y) => y.yearIDinDecsending == year+1))
+            {
+                setLockedScroll(true);
+                //setTimeout(() => lockScroll = false, 750);
+                setCards(yearsList.find((y) => y.yearIDinDecsending == year+1)?.cards || new Array<Card>);
+
+                var widthPrevYrObj = yearWidthAllocation.find((y) => y.yr == year+1) || null;
+                if(widthPrevYrObj != null)
+                {
+                    setCardScrollOffset(cardScrollOffset - widthPrevYrObj.width);
+                    //console.log("Subtracted " + widthPrevYrObj.width + " from overall scroll offset. Setting " + widthPrevYrObj.yr + " year width to 0");
+                    widthPrevYrObj.width = 0;
+                    cardOpacity.set(0);   
+
+                    let animSequence = yearAnims.find((searchYear) => {
+                        if(searchYear.yr == year+1)
+                        {
+                            animate(searchYear.animValue, 0, { duration: 0.01 });
+                            animate(searchYear.animValue, -width*0.4, { duration: 0.01 });
+
+                            setTimeout(() => {
+                                //console.log("Set state of " + (year+1) + " to not started");
+                                searchYear.state = AnimationYearState.NOT_STARTED;
+                                setYearAnims(yearAnims);
+                            }, 750);
+                        }
+                        if(searchYear.yr == year)
+                        {
+
+                            setTimeout(() => {
+                                //console.log("Set state of " + year + " to not started");
+                                searchYear.state = AnimationYearState.NOT_STARTED;
+                                setYearAnims(yearAnims);
+                            }, 750);
+                            
+                        }
+                    });
+                    
+                }
+                setYear(year+1);
+                
+            }
+
+        }else //Down
+        {
+            if(yearsList.find((y) => y.yearIDinDecsending == year-1))
+            {
+                setLockedScroll(true);
+                //setTimeout(() => lockScroll = false, 750);
+
+                setCards(yearsList.find((y) => y.yearIDinDecsending == year-1)?.cards || new Array<Card>);
+                
+                var widthYrObj = yearWidthAllocation.find((y) => y.yr == year) || null;
+                if(widthYrObj != null)
+                {
+                    widthYrObj.width = cardScroll.get()-cardScrollOffset;
+                    //console.log("Set width of year " + (year) + " to " + widthYrObj.width + " and setting offset for card scroll to " + widthYrObj.width)
+                    setCardScrollOffset(widthYrObj.width);
+                    cardOpacity.set(0);
+                    setYearWidthAllocation(yearWidthAllocation);
+                }
+
+                let animSequence = yearAnims.find((searchYear) => {
+                    if(searchYear.yr == year-1)
+                    {
+                        animate(searchYear.animValue, 0, { duration: 0.01 });
+                        setTimeout(() => animate(searchYear.animValue, -width * 0.4, { duration: 0.5 }),10);
+
+                        
+                        setTimeout(() => {
+                            //console.log("Set state of " + (year-1) + " to not started");
+                            searchYear.state = AnimationYearState.NOT_STARTED;
+                            setYearAnims(yearAnims);
+                        }, 750);
+                    }
+                    if(searchYear.yr == year)
+                        {
+                            setTimeout(() => {
+                                //console.log("Set state of " + (year-1) + " to not started");
+                                searchYear.state = AnimationYearState.NOT_STARTED;
+                                setYearAnims(yearAnims);
+                            }, 750);
+                        }
+
+                    
+                });
+
+                setYear(year-1);
+            }
+        }
+    }
+
+    function yearExitAnim() {
         let animSequence = yearAnims.find((searchYear) => {
             if(searchYear.yr == year && searchYear.state != AnimationYearState.ENDED)
             {
                 searchYear.state = AnimationYearState.ENDED;
                 
-                animate(searchYear.animValue, -1000, { duration: 0.5 })
-                console.log("State ended for year " + year);
+                animate(searchYear.animValue, -width*1, { duration: 0.5 })
+                //console.log("State ended for year " + year);
+                setTimeout(() => {changeYear(false)}, 500);
             }
         });
         setYearAnims(yearAnims);
-        
+   }
+
+    function yearStartAnim() 
+    {
+        {
+            let animSequence = yearAnims.find((searchYear) => {
+                if(searchYear.yr == year && searchYear.state == AnimationYearState.NOT_STARTED)
+                {
+                    searchYear.state = AnimationYearState.NOT_STARTED;
+                    
+                    animate(searchYear.animValue, -width*0.4, { duration: 0.5 })
+                    //console.log("State started for year " + year);
+                    
+                }
+            });
+            setYearAnims(yearAnims);
+       }
+    }
+
+    function yearSwitchupAnim()
+    {
+        {
+            let animSequence = yearAnims.find((searchYear) => {
+                if(searchYear.yr == year && searchYear.state == AnimationYearState.NOT_STARTED)
+                {
+                    searchYear.state = AnimationYearState.ENDED;
+                    
+                    animate(searchYear.animValue, +width*1.0, { duration: 1.0 })
+                    //console.log("State switchup for year " + year + " to " + (year + 1));
+                    setTimeout(() => {changeYear(true)}, 500);
+                    
+                }
+            });
+            setYearAnims(yearAnims);
+       }
     }
 
     useMotionValueEvent(scrollYProgress, "change", (latest) => {
@@ -117,24 +271,31 @@ function PortfoilioHero({yearsList}: Props) {
         if(latest >= 0.13)
         {
             scrollProgress = (-i * 4000);
-            console.log("Scroll " + cardScroll.get() + " width " + width);
+            //console.log("Scroll " + cardScroll.get() + " width " + width);
 
             var foundYr = yearsList.find((y) => y.yearIDinDecsending == year);
             if(foundYr != null)
                 {
-                    var ele = document.getElementById(foundYr.yearIDinDecsending.toString() + "-end") || "foaiwda";
+                    var end = document.getElementById(foundYr.yearIDinDecsending.toString() + "-end") || "nulldiv";
+                    var start = document.getElementById(foundYr.yearIDinDecsending.toString() + "-start") || "nulldiv";
+                    var switchup = document.getElementById(foundYr.yearIDinDecsending.toString() + "-switchup") || "nulldiv";
                     
-                    inView(ele, yearExit);
+                    //console.log("latest - prev " + (latest-(scrollYProgress.getPrevious()||0)));
+                    if((latest-(scrollYProgress.getPrevious()||0)) > 0) inView(end, yearExitAnim);
+                    inView(start, yearStartAnim);
+                    inView(switchup, yearSwitchupAnim);
                 }
         }
-        
-        cardScroll.set(scrollProgress);
+        //console.log("Card scroll prog " + scrollProgress + " - offset  " + cardScrollOffset);
+        cardScroll.set(scrollProgress - cardScrollOffset);
         
     });
 
-
+    const devHighlight = true;
 
   return (
+    <ReactLenis root>
+
     <motion.div
     className="h-[100vh] flex justify-center overflow-hidden relative rounded-md pb-[1200vh]"
     ref={ref}
@@ -161,24 +322,50 @@ function PortfoilioHero({yearsList}: Props) {
             </div>
         </motion.div>
 
-        <motion.div style={{opacity: titleText_opacity, translateY: yearCard_translateY, rotateZ: 0, }} className="fixed flex items-center justify-center top-[30vh] text-gray-600 font-bold  text-4xl">
-            <p>I generally didnt do much this year tbh.<br></br> I'm serving national service in 2024.</p>
+        <motion.div id="title-text" style={{opacity: titleText_opacity, translateY: yearCard_translateY, rotateZ: 0, }} className="fixed top-[30vh] text-gray-600 font-bold  text-4xl">
+            { (yearsList.find((y) => y.yearIDinDecsending == year)?.yearTitleText  || "").toString().split("\n").map((txt, i) => <p id={i.toString()+txt.length.toString()} key={i.toString()+txt.length.toString()}>{txt}<br></br></p>) }
         </motion.div>
 
         <motion.div style={{opacity: yearCard_opacity, translateY: yearCard_translateY}} className="fixed right-[0.0vw] top-[45vh] ">
-            <motion.div className="">
+            <motion.div className="flex">
+                <motion.div 
+                    className="min-h-[24rem] min-w-[2rem] rounded-3xl bg-gradient-to-l from-slate-50 to-red-300 opacity-0"
+                    id={year.toString()+"-switchup"}
+                    style={{
+                        x: cardScroll,
+                        
+                    }}
+                    initial={{
+                        translateX: ((-120))+"vw" ,
+                    }}
+                    >
+                </motion.div>
+                <motion.div 
+                    id={year.toString()+"-start"}
+                    style={{
+                        x: cardScroll,
+                        
+                    }}
+                    initial={{
+                        translateX: ((-0 * 30))+"rem" ,
+                    }}
+                    className="min-h-[24rem] min-w-[2rem] rounded-3xl bg-gradient-to-l from-slate-50 to-green-300 opacity-0">
+
+                </motion.div>
                 {
                 cards.map((card, i) => (
                     <motion.div 
                         style={{
                             x: cardScroll,
-                            left: (yearAnims.find((searchYr) => searchYr.yr == year))?.animValue || motionValue(0) + "rem"
+                            left: ((yearAnims.find((searchYr) => searchYr.yr == year))?.animValue || motionValue(0)),
+                            opacity: cardOpacity,
                         }}
                         initial={{
                             translateX: (-12.5 + i * 30) + "rem"
                         }}
 
                         key={card.id} 
+                        id={card.id+"-"+year}
                         className={card.thumbn_addiClassNames + " absolute w-[25rem] h-[22rem] rounded-3xl text-gray-300 space-y-4 "}>
                         <div className="px-8 pt-8 flex justify-between items-baseline">
                             <div className="">
@@ -201,9 +388,9 @@ function PortfoilioHero({yearsList}: Props) {
                     x: cardScroll
                 }}
                 initial={{
-                    translateX: ((4 * 30))+"rem" ,
+                    translateX: ((cards.length * 30 - 10))+"rem" ,
                 }}
-                className="h-[22rem] w-[2rem] rounded-3xl bg-gradient-to-l from-slate-50 to-blue-300 ">
+                className="h-[24rem] w-[2rem] rounded-3xl bg-gradient-to-l from-slate-50 to-blue-300 opacity-0">
 
                 </motion.div>
 
@@ -211,6 +398,9 @@ function PortfoilioHero({yearsList}: Props) {
         </motion.div>
 
     </motion.div>
+
+    { /* content */ }
+  </ReactLenis>
   )
 }
 
