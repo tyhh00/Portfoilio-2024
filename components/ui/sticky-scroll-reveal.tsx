@@ -12,6 +12,11 @@ import JSPNG from "@/images/libraryIcons/javascript.png"
 import htmlPNG from "@/images/libraryIcons/html.png"
 import computerPNG from "@/images/libraryIcons/computer.webp"
 
+
+import ProductCreationPng from "@/images/portfoilio/fnf/detailedSS/ProductVariantCreation.png"
+import frontEndStore from "@/images/portfoilio/fnf/fnfstorefront.png"
+import CodingAdmin from "@/images/portfoilio/fnf/detailedSS/CodingBlockAdmin.png"
+
 export const StickyScroll = ({
   content,
   contentClassName,
@@ -31,7 +36,7 @@ export const StickyScroll = ({
     setHeight(ref.current.clientHeight);
     setWidth(ref.current.getBoundingClientRect().width);
 
-    console.log("Height: " + height + " width: " + width + " div: " + width/height);
+    //console.log("Height: " + height + " width: " + width + " div: " + width/height);
   })
 
   const { scrollYProgress } = useScroll({
@@ -43,8 +48,11 @@ export const StickyScroll = ({
   const translateY1 = useMotionValue(initOffset);
   const translateY2 = useMotionValue(1000);
   const translateY3 = useMotionValue(2000);
+  const translateY4 = useMotionValue(4000);
   const opacity1 = useMotionValue(1);
   const opacity2 = useMotionValue(1);
+  const opacity1to2 = useMotionValue(1);
+  const opacity3 = useMotionValue(1);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     console.log("Latest: " + latest);
@@ -72,15 +80,33 @@ export const StickyScroll = ({
     translateY3.set(translateY2.get() + trans2Max - ( transition2 > trans2Max ? trans2Max : transition2));
     
     //Opacity2 Animation
-    var diff = translateY3.get() - translateY2.get();
-    if(diff < 250) 
+    var diff2 = translateY3.get() - translateY2.get();
+    console.log("diff 2 " + diff2);
+    if(diff2 < 250) 
     {
-      opacity2.set(diff * 0.004);
+      opacity2.set(diff2 * 0.004);
     }
     else opacity2.set(1);
-    
 
+    //Opacity1 TO 2 Set
+    opacity1to2.set(opacity2.get() + opacity1.get());
     
+    //Transition3-4 Animation
+    var trans3Max = 3000
+    var transition3 = latest * 2.5 * trans3Max - translateY3.get();
+    
+    translateY4.set(translateY3.get() + trans3Max - ( transition3 > trans3Max ? 2000 : transition3 / 2.5));
+    
+    //Opacity3 Animation
+    var diff3 = translateY4.get() - translateY3.get();
+    console.log("diff 3 " + diff3);
+    console.log("translate 2 " + translateY2.get() + " t3 " + translateY3.get() + " t4 " + translateY4.get());
+    if(diff3 < 250) 
+    {
+      opacity3.set(diff3 * 0.004);
+    }
+    else opacity3.set(1);
+  
 
     
     
@@ -93,119 +119,171 @@ export const StickyScroll = ({
     >
       <div className="" >
 
-        <motion.div
-          style={{
-            translateY: translateY1,
-            opacity: opacity1,
-            left: 0,
-            right: 0
-          }}
-          className="absolute mx-auto min-h-[30vh] my-8 w-[85vw] bg-black"
-        >
 
-        </motion.div>
-
-        {false && //OLD CARD 1
-        <motion.div
-          style={{
-            translateY: translateY1,
-            opacity: opacity1,
-            left: 0,
-            right: 0
-          }}
-          
-          className="absolute mx-auto border-blue-500 overflow-hidden border-l-4 rounded-t-3xl rounded-b-lg  bg-neutral-200 sm:drop-shadow-2xl min-h-[30vh] my-8 w-[85vw]">
-          <motion.div className="absolute right-0" 
-            initial={{
-              rotateZ: 40,
-              scale: 1.05,
-            }}
-            animate={{
-              translateY: [20, -20, 20],
-              scale: [1.25, 1, 1.25],
-              translateX: [-40, 40, -40],
-            }}
-            transition={{
-              repeat: Infinity,
-              duration: 5.0,
-            }}
-          >
-            <Image src={computerPNG} alt="Computer" className="w-[5rem] h-[5rem] opacity-50"></Image>
-          </motion.div>
-          <div className="space-y-2 md:space-y-6 xl:space-y-0 xl:flex items-center md:gap-10 xl:gap-20 ml-[4vw] mr-[4vw]">
-            
-            <div className="xl:h-[30vh] flex items-center">
-              <p className="xl:mt-0 mt-12 text-matteyellow font-bold text-3xl md:text-4xl xl:text-5xl">WEB DEVELOPMENT</p>
-            </div>
-
-            <div>
-              <p className="text-gray-700 text-xs md:text-sm lg:text-base xl:text-lg ">
-                I build exciting, animated websites with passion! I love using the React Next.JS Framework, and utilize innovative techniques to achieve the smoothest experience on the websites I build.
-              </p>
-              {/* Animated BG */}
-            </div>
-
-            <div>
-              <p className="text-gray-700 text-3xl md:text-4xl  xl:text-7lg pb-4">
-                3+ Years
-              </p>
-            </div>
-
-          </div>
-
-          <div className=" grid-flow-col grid-cols-3 ml-[4vw] mr-[4vw] gap-5 pb-8 md:pb-16 lg:pb-8 text-neutral-800 text-xs md:text-sm xl:text-xl font-bold">
-            <div className="flex items-center justify-start gap-2 md:gap-4 xl:gap-5">
-              <Image src={reactPNG} alt="React Icon" width={0} height={0} className="w-[25px] xl:w-[50px] h-auto"></Image>
-              <p>React</p>
-              <p>︱ 1 Year of Experience</p>
-            </div>
-
-            <div className="flex items-center justify-start  gap-2 md:gap-4 xl:gap-5">
-              <Image src={nextJSPNG} alt="NextJS Icon" width={0} height={0} className="w-[25px] xl:w-[50px] h-auto"></Image>
-              <p>NextJS</p>
-            </div>
-
-            <div className="flex items-center justify-start  gap-2 md:gap-4 xl:gap-5">
-              <Image src={htmlPNG} alt="NextJS Icon" width={0} height={0} className="w-[25px] xl:w-[50px] h-auto"></Image>
-              <p>NextJS</p>
-            </div>
-          </div>
-
-        </motion.div>
-        }
-
-
+        {/**FULL STACK LHS VERTICAL TEXT START */}
         <motion.div 
+          initial={{opacity:0}}
+          whileInView={{opacity:1}}
+          transition={{duration:0.5, delay: 0.15, ease:"circInOut"}}
+          style={{
+            translateY: translateY1,
+            opacity: opacity1to2,
+            left: "8vw",
+            top: 0,
+            bottom: 0,
+            rotate:180,
+            writingMode: 'vertical-rl'
+          }}
+          className="absolute  max-w-[60vh]"
+           >
+          <h2 className="text-4xl text-dark border-l-4 border-spacing-4 border-l-yellow-600 text-right">Full Stack Web Development</h2>
+        </motion.div>
+        {/**FULL STACK LHS VERTICAL TEXT END */}
+        
+        {/**FULL STACK RHS TEXT & IMAGE 1 START */}
+        <motion.div
+          style={{
+            translateY: translateY1,
+            opacity: opacity1,
+            left: 0,
+            right: 0
+          }}
+          className="absolute mx-auto max-h-[60vh] my-8 w-[85vw] "
+        >
+          <div className="flex justify-start items-center gap-[4vw]">
+            <div className="min-w-[12vw]">
+
+            </div>
+            <div className=" min-w-[25vw] h-[60vh] flex items-center justify-center">
+              <motion.div  
+              whileInView={{scale:1.5}}
+              transition={{duration:0.5, delay: 0.15}}
+              className="">
+                <Image
+                  alt="Product Creation"
+                  src={ProductCreationPng.src}
+                  width={1200}
+                  height={1200}
+                  className="my-auto overflow-hidden rounded-lg max-h-[60vh] max-w-[25vw]"
+                  >
+
+                </Image>
+              </motion.div>
+            </div>
+
+            <motion.div 
+            whileInView={{opacity: 1.0, translateX:0}}
+            initial={{opacity: 0.0, translateX:-200}}
+            transition={{duration:0.5, delay: 0.15}}
+            className="mx-[6vw] text-dark max-w-[35vw]">
+              <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold">Building Impressions That Last</h1>
+              <h1 className="text-lg lg:text-xl xl:text-2xl">Data Read / Write / Store Applications / Ecommerce / Portfoilio Websites</h1>
+            </motion.div>
+          </div>
+
+        </motion.div>
+        {/**FULL STACK RHS TEXT & IMAGE 1 END */}
+
+        
+         {/**FULL STACK RHS TEXT & IMAGE 2 START */}
+         <motion.div
           style={{
             translateY: translateY2,
             opacity: opacity2,
             left: 0,
-            right: 0,
+            right: 0
           }}
+          className="absolute mx-auto max-h-[60vh] my-8 w-[85vw] "
+        >
+          <div className="flex justify-start items-center gap-[4vw]">
+            <div className="min-w-[12vw]">
 
-
-          className="absolute mx-auto  border-blue-500 border-l-4 rounded-t-3xl rounded-b-lg  bg-neutral-200 sm:drop-shadow-2xl min-h-[30vh] my-8 w-[85vw]">
-          <div className="space-y-10 lg:space-y-0 lg:flex items-center md:gap-10 lg:gap-20 ml-[4vw] mr-[4vw]">
-            
-            <div className="lg:h-[30vh] flex items-center">
-              <p className="lg:mt-0 mt-20 text-matteyellow font-bold text-5xl">WEB DEVELOPMENT 2</p>
             </div>
 
-            <div>
-              <p className="text-gray-700 text-lg ">
-                I build exciting, animated websites with passion! I love using the React Next.JS Framework, and utilize innovative techniques to achieve the smoothest experience on the websites I build.
-              </p>
-              {/* Animated BG */}
+            <motion.div 
+            whileInView={{opacity: 1.0, translateX:0}}
+            initial={{opacity: 0.0, translateX:200}}
+            transition={{duration:0.5, delay: 0.15}}
+            className=" text-dark max-w-[35vw]">
+              <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold">Building With First Impression In Mind</h1>
+              <h1 className="text-lg lg:text-xl xl:text-2xl">User Experience / Animations / Load Time / SEO / Functionality</h1>
+            </motion.div>
+
+            <div className="mx-[6vw] min-w-[25vw] h-[60vh] flex items-center justify-center">
+              <motion.div  
+              whileInView={{scale:1.5}}
+              transition={{duration:0.5, delay: 0.15}}
+              className="">
+                <Image
+                  alt="Product Creation"
+                  src={frontEndStore.src}
+                  width={1200}
+                  height={1200}
+                  className="my-auto overflow-hidden rounded-lg max-h-[60vh] max-w-[25vw]"
+                  >
+
+                </Image>
+              </motion.div>
             </div>
 
-            <div>
-              <p className="text-gray-700 text-4xl md:text-5xl lg:text-6xl xl:text-7lg pb-16 lg:pb-0">
-                3+ Years
-              </p>
-            </div>
 
           </div>
+
         </motion.div>
+        {/**FULL STACK RHS TEXT & IMAGE 2 END */}
+
+
+         {/**FULL STACK RHS TEXT & IMAGE 3 START */}
+         <motion.div
+          style={{
+            translateY: translateY3,
+            opacity: opacity3,
+            left: 0,
+            right: 0
+          }}
+          className="absolute mx-auto max-h-[60vh] my-8 w-[85vw] "
+        >
+          <div className="flex justify-start items-center gap-[4vw]">
+            <div className="min-w-[12vw]">
+
+            </div>
+
+            <div className=" min-w-[25vw] h-[60vh] flex items-center justify-center">
+              <motion.div  
+              whileInView={{scale:1.5}}
+              transition={{duration:0.5, delay: 0.15}}
+              className="">
+                <Image
+                  alt="Product Creation"
+                  src={CodingAdmin.src}
+                  width={1200}
+                  height={1200}
+                  className="my-auto overflow-hidden rounded-lg max-h-[60vh] max-w-[25vw]"
+                  >
+
+                </Image>
+              </motion.div>
+            </div>
+
+            <motion.div 
+            whileInView={{opacity: 1.0, translateX:0}}
+            initial={{opacity: 0.0, translateX:-200}}
+            transition={{duration:0.5, delay: 0.15}}
+            className=" mx-[6vw] text-dark max-w-[35vw]">
+              <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold">Building With Safety In Mind</h1>
+              <h1 className="text-lg lg:text-xl xl:text-2xl">Server Side Authentication / Data Handling / Bug Free Code</h1>
+            </motion.div>
+
+
+
+
+          </div>
+
+        </motion.div>
+        {/**FULL STACK RHS TEXT & IMAGE 3 END */}
+
+        
+        {false &&
 
         <motion.div 
         style={{
@@ -236,6 +314,7 @@ export const StickyScroll = ({
 
           </div>
         </motion.div>
+}
 
       </div>
 
