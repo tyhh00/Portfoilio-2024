@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
+import { fancy_title_text } from "./fonts";
  
 const transition = {
   type: "spring",
@@ -72,12 +73,13 @@ export const Menu = ({
   children: React.ReactNode;
 }) => {
   return (
-    <nav
+    <motion.nav
+
       onMouseLeave={() => setActive(null)} // resets the state
-      className={children == null ? "" : "relative boder border-transparent rounded-2xl dark:bg-black dark:border-white/[0.2] bg-white shadow-input flex justify-center space-x-4 px-8 py-6 "}
+      className={children == null ? "" : "relative boder border-transparent bg-black bg-opacity-40 shadow-input flex justify-center space-x-4 px-8 py-6 "}
     >
       {children}
-    </nav>
+    </motion.nav>
   );
 };
  
