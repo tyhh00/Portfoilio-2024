@@ -44,7 +44,7 @@ export const HeroParallax = ({
     springConfig
   );
   const translateXReverse = useSpring(
-    useTransform(scrollYProgress, [0.1, 0.55], [0, -600]),
+    useTransform(scrollYProgress, [0.1, 0.55], [-200, -600]),
     springConfig
   );
   const rotateX = useSpring(
@@ -52,11 +52,11 @@ export const HeroParallax = ({
     springConfig
   );
   const opacity = useSpring(
-    useTransform(scrollYProgress, [0.033, 0.14], [0.2, 1]),
+    useTransform(scrollYProgress, [0.0005, 0.14], [0.09, 1]),
     springConfig
   );
   const titleOpacity = useSpring(
-    useTransform(scrollYProgress, [0.115, 0.125], [0.0, 1]),
+    useTransform(scrollYProgress, [0.095, 0.125], [0.0, 1]),
     springConfig
   );
   const rotateZ = useSpring(
@@ -65,7 +65,7 @@ export const HeroParallax = ({
   );
 
   const translateY = useSpring(
-    useTransform(scrollYProgress, [0.03, 0.15], [-800, 400]),
+    useTransform(scrollYProgress, [0.03, 0.15], [-1000, 400]),
     springConfig
   );
 
@@ -79,7 +79,7 @@ export const HeroParallax = ({
   return (
     <div
       ref={ref}
-      className="min-h-[150vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d] bg-black"
+      className="min-h-[150vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d] bg-dark"
     >
 
 
@@ -263,6 +263,9 @@ export const ProductCard = ({
       key={product.title}
       className="group/product  h-80 w-[30rem] relative flex-shrink-0"
     >
+      <div className="absolute w-full h-full bg-dark opacity-100">
+
+      </div>
       <Link
         href={product.link}
         className="block group-hover/product:shadow-2xl "
@@ -271,11 +274,11 @@ export const ProductCard = ({
           src={product.thumbnail}
           height="1200"
           width="1200"
-          className="object-cover object-left-top absolute h-full w-full inset-0 rounded-lg"
+          className="object-cover object-left-top absolute h-full w-full inset-0 rounded-lg border border-black hover:border-0 border-opacity-20"
           alt={product.title}
         />
       </Link>
-      <div className="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none"></div>
+      <div className="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black rounded-lg pointer-events-none"></div>
       <h2 className="absolute bottom-4 left-4 opacity-0 group-hover/product:opacity-100 text-white">
         {product.title}
       </h2>

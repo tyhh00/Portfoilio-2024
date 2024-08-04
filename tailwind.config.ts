@@ -27,6 +27,9 @@ const config = {
     extend: {
       colors: {
         'matteyellow': '#62583f',
+        'fill' : "#EEEDE7",
+        'fill2' : "#b9b7bd",
+        'dark': "#121212",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

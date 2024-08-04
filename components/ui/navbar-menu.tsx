@@ -76,7 +76,7 @@ export const Menu = ({
     <motion.nav
 
       onMouseLeave={() => setActive(null)} // resets the state
-      className={children == null ? "" : "relative boder border-transparent bg-black bg-opacity-40 shadow-input flex justify-center space-x-4 px-8 py-6 "}
+      className={children == null ? "" : "relative boder border-transparent  bg-gradient-to-t from-dark/55 to-dark/65 shadow-input flex justify-center space-x-4 px-8 py-8 "}
     >
       {children}
     </motion.nav>

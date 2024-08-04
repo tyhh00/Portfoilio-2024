@@ -8,7 +8,7 @@ import { fancy_title_text } from "./ui/fonts";
 export function MainNavbar() {
   return (
     <div className="relative w-full flex items-center justify-center">
-      <Navbar className=" top-5" />
+      <Navbar className="" />
     </div>
   );
 }
@@ -42,17 +42,18 @@ function Navbar({ className }: { className?: string }) {
     <motion.div
       animate={visible ? {opacity: 1, y:0} : {opacity:0, y:-60}}
       transition={{
+        delay:0.15,
         duration:0.6,
         ease:"backInOut",
       }}
-      className={cn("fixed top-10 inset-x-0 w-[100vw] z-50", className)}
+      className={cn("fixed top-5 inset-x-0 w-[100vw] z-50", className)}
     >
       
       <Menu setActive={setActive}>
         <div className = "flex items-center justify-start">
 
           <div className="w-[10vw]">
-           <h1 className={fancy_title_text.className + " text-3xl"}>YH</h1>
+           <h1 className={fancy_title_text.className + " text-4xl"}>YH</h1>
           </div>
 
           <div className="flex items-center justify-center gap-8 lg:gap-16 xl:gap-20 min-w-[80vw] pr-[10vw]">

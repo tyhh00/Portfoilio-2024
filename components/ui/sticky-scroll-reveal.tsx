@@ -100,6 +100,20 @@ export const StickyScroll = ({
             left: 0,
             right: 0
           }}
+          className="absolute mx-auto min-h-[30vh] my-8 w-[85vw] bg-black"
+        >
+
+        </motion.div>
+
+        {false && //OLD CARD 1
+        <motion.div
+          style={{
+            translateY: translateY1,
+            opacity: opacity1,
+            left: 0,
+            right: 0
+          }}
+          
           className="absolute mx-auto border-blue-500 overflow-hidden border-l-4 rounded-t-3xl rounded-b-lg  bg-neutral-200 sm:drop-shadow-2xl min-h-[30vh] my-8 w-[85vw]">
           <motion.div className="absolute right-0" 
             initial={{
@@ -158,6 +172,7 @@ export const StickyScroll = ({
           </div>
 
         </motion.div>
+        }
 
 
         <motion.div 
