@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Mulish, Quattrocento } from "next/font/google";
+import { default_font } from "@/components/ui/fonts";
 import "./globals.css";
 
 import { MainNavbar } from "@/components/navbar";
@@ -7,12 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Footer from "@/components/specific/footer";
 
 
-const inter = Inter({ subsets: ["latin"] });
-const quattrocento = Quattrocento({
-    subsets: ["latin"],
-    weight: "400"
-});
-const muli = Mulish({ subsets: ["latin"]});
+
 
 export const metadata: Metadata = {
   title: "Tan Yong Hong",
@@ -26,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-        <body className={muli.className + ""}>
+        <body className={default_font.className + ""}>
             <ThemeProvider
                 attribute="class"
                 defaultTheme="dark"

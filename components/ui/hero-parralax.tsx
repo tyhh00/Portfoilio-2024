@@ -79,7 +79,7 @@ export const HeroParallax = ({
   return (
     <div
       ref={ref}
-      className="min-h-[150vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d] bg-black"
+      className="min-h-[150vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d] bg-fill"
     >
       <Header />
       <motion.div
@@ -198,7 +198,7 @@ export const Header = () => {
             <h1 className={" text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold pt-8"} style={{zIndex:2}}>
                 <TypewriterTitle/>
             </h1>
-            <p className="max-w-sm md:max-w-lg lg:max-w-2xl  text-sm sm:text-md md:text-base pt-4 text-gray-200" style={{zIndex:2}}>Hey there! I'm {age} this year. I build software applications, full stack websites, games, and quantitative trading software. I'm based in Singapore</p>
+            <p className="max-w-sm md:max-w-lg lg:max-w-2xl  text-sm sm:text-md md:text-base pt-4 text-filltext" style={{zIndex:2}}>Hey there! I'm {age} this year. I build software applications, full stack websites, games, and quantitative trading software. I'm based in Singapore</p>
             
 
         </motion.div>

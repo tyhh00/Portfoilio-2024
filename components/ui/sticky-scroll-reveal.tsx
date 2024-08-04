@@ -30,8 +30,6 @@ export const StickyScroll = ({
   useEffect(() => {
     setHeight(ref.current.clientHeight);
     setWidth(ref.current.getBoundingClientRect().width);
-
-    console.log("Height: " + height + " width: " + width + " div: " + width/height);
   })
 
   const { scrollYProgress } = useScroll({

@@ -26,7 +26,18 @@ const config = {
     },
     extend: {
       colors: {
-        'matteyellow': '#62583f',
+        "fill" : "#DFDFD4",
+        "fill-dark" : "#C0C0AA",
+        "fill-darkest" : "#A1A180",
+        "fillopposite" : "#434331",
+        "fillopposite-dark" : "#383829",
+        "fillopposite-darkest" : "#2D2D21",
+
+        "alternatefill" : "#D4DFDF",
+        "alternatefill-2" : "#DFD4DF",
+
+        "filltext" : "#0C0E0D",
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -112,6 +123,13 @@ const config = {
         'shimmer': "shimmer 2s linear infinite",
         'spotlight': "spotlight 2s ease .75s 1 forwards",
         'aurora': "aurora 60s linear infinite",
+      },
+      fontSize: {
+        'tiny': '0.65rem',
+        'base': ['1.05rem', {
+          lineHeight: '1.7rem',
+          letterSpacing: '0.03em',
+        }],
       },
     },
   },
