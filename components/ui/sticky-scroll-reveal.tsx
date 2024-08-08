@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { useMotionValue, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
+import { MotionValue, useMotionValue, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
 import { motion } from "framer-motion";
 import { cn } from "@/utils/cn";
 import Image from "next/image";
@@ -37,76 +37,58 @@ export const StickyScroll = ({
     setWidth(ref.current.getBoundingClientRect().width);
 
     //console.log("Height: " + height + " width: " + width + " div: " + width/height);
-  })
+  }, )
 
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
   });
+  
+  const totalHeight = 800;
+  const scrollRatio = (totalHeight-100)/totalHeight
+
+  var translations = Array<MotionValue<number>>();
+  var opacitys = Array<MotionValue<number>>();
+  var bgParallax = useMotionValue(0);
+  translations.push(useMotionValue(totalHeight));
+  opacitys.push(useMotionValue(1));
+
+  const totalSlides = 5;
+  for(var i = 1; i<=totalSlides; i++) {
+    translations.push(useMotionValue(totalHeight * (i+1)));
+    opacitys.push(useMotionValue(0));
+  }
+
+  
 
   const initOffset = 100;
-  const translateY1 = useMotionValue(initOffset);
-  const translateY2 = useMotionValue(1000);
   const translateY3 = useMotionValue(2000);
-  const translateY4 = useMotionValue(4000);
-  const opacity1 = useMotionValue(1);
-  const opacity2 = useMotionValue(1);
   const opacity1to2 = useMotionValue(1);
-  const opacity3 = useMotionValue(1);
+
+
+  const lengthVarBetweenCards = 0.25;
+  const scrollSpeed = 5.00;
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     console.log("Latest: " + latest);
-    translateY1.set(latest * (height * 0.75) + initOffset);
-
-    //Transition1-2 Animation
-    var trans1Max = 1000
-    var transition1 = latest * 2.5 * trans1Max;
-    
-    translateY2.set(translateY1.get() + trans1Max - ( transition1 > trans1Max ? trans1Max : transition1));
-    
-    //Opacity1 Animation
-    var diff = translateY2.get() - translateY1.get();
-    if(diff < 250) 
+    translations[0].set(latest * (height * scrollRatio) + initOffset);
+    bgParallax.set(translations[0].get() - latest * totalHeight );
+    for(var i = 1; i < translations.length; i++)
     {
-      opacity1.set(diff * 0.004);
+      var transitionMax =  totalHeight * (i) * scrollRatio / (1/translations.length) * lengthVarBetweenCards;
+      var transitionProcess = latest * (totalHeight / transitionMax) * transitionMax * scrollSpeed;
+      translations[i].set(translations[i-1].get() + transitionMax - (transitionProcess > transitionMax ? transitionMax : transitionProcess) );
+      //console.log("Translation " + i + " :" + translations[i].get() + " translation max " + transitionMax + " translation process " + transitionProcess);
+      var diff = translations[i].get() - translations[i-1].get();
+      if(diff < 250) {
+        opacitys[i-1].set(diff * 0.004);
+      }
+      else opacitys[i-1].set(1);
     }
-    else opacity1.set(1);
 
 
-    //Transition2-3 Animation
-    var trans2Max = 2000
-    var transition2 = latest * 2.5 * trans2Max - translateY2.get();
-    
-    translateY3.set(translateY2.get() + trans2Max - ( transition2 > trans2Max ? trans2Max : transition2));
-    
-    //Opacity2 Animation
-    var diff2 = translateY3.get() - translateY2.get();
-    console.log("diff 2 " + diff2);
-    if(diff2 < 250) 
-    {
-      opacity2.set(diff2 * 0.004);
-    }
-    else opacity2.set(1);
 
-    //Opacity1 TO 2 Set
-    opacity1to2.set(opacity2.get() + opacity1.get());
-    
-    //Transition3-4 Animation
-    var trans3Max = 3000
-    var transition3 = latest * 2.5 * trans3Max - translateY3.get();
-    
-    translateY4.set(translateY3.get() + trans3Max - ( transition3 > trans3Max ? 2000 : transition3 / 2.5));
-    
-    //Opacity3 Animation
-    var diff3 = translateY4.get() - translateY3.get();
-    console.log("diff 3 " + diff3);
-    console.log("translate 2 " + translateY2.get() + " t3 " + translateY3.get() + " t4 " + translateY4.get());
-    if(diff3 < 250) 
-    {
-      opacity3.set(diff3 * 0.004);
-    }
-    else opacity3.set(1);
-  
+
 
     
     
@@ -114,7 +96,7 @@ export const StickyScroll = ({
 
   return (
     <motion.div
-      className="h-[100vh] flex justify-center overflow-hidden relative rounded-md pb-[400vh]"
+      className={"min-h-[100vh] flex justify-center overflow-hidden relative rounded-md" +  " pb-["+totalHeight+"vh]"}
       ref={ref}
     >
       <div className="" >
@@ -122,39 +104,51 @@ export const StickyScroll = ({
 
         {/**FULL STACK LHS VERTICAL TEXT START */}
         <motion.div 
-          initial={{opacity:0}}
-          whileInView={{opacity:1}}
-          transition={{duration:0.5, delay: 0.15, ease:"circInOut"}}
+          initial={{opacity:0.0, scale:1.0, left:"0vw"}}
+          whileInView={{opacity:1, scale:1.0, left: (width < 650 ? width * 0.04 : width*0.08)}}
+          viewport={{margin:"200px"}}
+          transition={{duration:0.8, delay: 0.3, ease:"anticipate"}}
           style={{
-            translateY: translateY1,
+            translateY: translations[0],
             opacity: opacity1to2,
-            left: "8vw",
             top: 0,
             bottom: 0,
             rotate:180,
             writingMode: 'vertical-rl'
           }}
-          className="absolute  max-w-[60vh]"
+          className="invisible hidden md:visible md:block absolute mt-[4vh] sm:mt-[1vh] md:max-w-[56vh]"
            >
-          <h2 className="text-4xl text-dark border-l-4 border-spacing-4 border-l-yellow-600 text-right">Full Stack Web Development</h2>
+          <h2 className="text-xl md:text-2xl lg:text-4xl text-dark border-l-4 border-spacing-4 border-l-yellow-600 text-right">Full Stack Web Development</h2>
         </motion.div>
         {/**FULL STACK LHS VERTICAL TEXT END */}
+
+        {/**Circles On The Bottom Right */}
+        <motion.div style={{
+            translateY: bgParallax,
+            }}
+            className="absolute -right-[30%]">
+
+              <svg id="visual" className="opacity-75" viewBox="0 0 900 900" width="1000" height="1000" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1"><g transform="translate(450 300)"><path d="M165.1 -227.3C212.7 -192.7 249 -142.7 267.2 -86.8C285.3 -30.9 285.3 30.9 267.2 86.8C249 142.7 212.7 192.7 165.1 227.3C117.6 261.8 58.8 280.9 0 280.9C-58.8 280.9 -117.6 261.8 -165.1 227.3C-212.7 192.7 -249 142.7 -267.2 86.8C-285.3 30.9 -285.3 -30.9 -267.2 -86.8C-249 -142.7 -212.7 -192.7 -165.1 -227.3C-117.6 -261.8 -58.8 -280.9 0 -280.9C58.8 -280.9 117.6 -261.8 165.1 -227.3" fill="none" stroke="#FFFFFF" stroke-width="3"></path></g></svg>
+              <svg id="visual2" className=" top-10 opacity-75" viewBox="0 0 900 900" width="1000" height="1000" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1"><g transform="translate(450 300)"><path d="M165.1 -227.3C212.7 -192.7 249 -142.7 267.2 -86.8C285.3 -30.9 285.3 30.9 267.2 86.8C249 142.7 212.7 192.7 165.1 227.3C117.6 261.8 58.8 280.9 0 280.9C-58.8 280.9 -117.6 261.8 -165.1 227.3C-212.7 192.7 -249 142.7 -267.2 86.8C-285.3 30.9 -285.3 -30.9 -267.2 -86.8C-249 -142.7 -212.7 -192.7 -165.1 -227.3C-117.6 -261.8 -58.8 -280.9 0 -280.9C58.8 -280.9 117.6 -261.8 165.1 -227.3" fill="none" stroke="#FFFFFF" stroke-width="3"></path></g></svg>
+              <svg id="visual3" className="top-[50%] opacity-75" viewBox="0 0 900 900" width="1000" height="1000" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1"><g transform="translate(450 300)"><path d="M165.1 -227.3C212.7 -192.7 249 -142.7 267.2 -86.8C285.3 -30.9 285.3 30.9 267.2 86.8C249 142.7 212.7 192.7 165.1 227.3C117.6 261.8 58.8 280.9 0 280.9C-58.8 280.9 -117.6 261.8 -165.1 227.3C-212.7 192.7 -249 142.7 -267.2 86.8C-285.3 30.9 -285.3 -30.9 -267.2 -86.8C-249 -142.7 -212.7 -192.7 -165.1 -227.3C-117.6 -261.8 -58.8 -280.9 0 -280.9C58.8 -280.9 117.6 -261.8 165.1 -227.3" fill="none" stroke="#FFFFFF" stroke-width="3"></path></g></svg>
+        </motion.div>
+        {/**Circles On The Bottom Right END */}
         
         {/**FULL STACK RHS TEXT & IMAGE 1 START */}
         <motion.div
           style={{
-            translateY: translateY1,
-            opacity: opacity1,
+            translateY: translations[0],
+            opacity: opacitys[0],
             left: 0,
             right: 0
           }}
           className="absolute mx-auto max-h-[60vh] my-8 w-[85vw] "
         >
-          <div className="flex justify-start items-center gap-[4vw]">
-            <div className="min-w-[12vw]">
+          <div className="md:flex justify-start items-center gap-[4vw]">
+            <div className="md:min-w-[12vw]">
 
             </div>
-            <div className=" min-w-[25vw] h-[60vh] flex items-center justify-center">
+            <div className=" min-w-[25vw] md:h-[30vw] h-[60vw] flex items-center justify-center">
               <motion.div  
               whileInView={{scale:1.5}}
               transition={{duration:0.5, delay: 0.15}}
@@ -164,7 +158,7 @@ export const StickyScroll = ({
                   src={ProductCreationPng.src}
                   width={1200}
                   height={1200}
-                  className="my-auto overflow-hidden rounded-lg max-h-[60vh] max-w-[25vw]"
+                  className="my-auto overflow-hidden rounded-lg max-h-[60vh] max-w-[50vw] md:max-w-[25vw]"
                   >
 
                 </Image>
@@ -175,9 +169,11 @@ export const StickyScroll = ({
             whileInView={{opacity: 1.0, translateX:0}}
             initial={{opacity: 0.0, translateX:-200}}
             transition={{duration:0.5, delay: 0.15}}
-            className="mx-[6vw] text-dark max-w-[35vw]">
+            className="pt-[12.5vw] md:pt-0 text-center md:text-left md:mx-[6vw] text-dark max-w-[90vw] md:max-w-[35vw]">
+              
               <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold">Building Impressions That Last</h1>
               <h1 className="text-lg lg:text-xl xl:text-2xl">Data Read / Write / Store Applications / Ecommerce / Portfoilio Websites</h1>
+
             </motion.div>
           </div>
 
@@ -188,8 +184,8 @@ export const StickyScroll = ({
          {/**FULL STACK RHS TEXT & IMAGE 2 START */}
          <motion.div
           style={{
-            translateY: translateY2,
-            opacity: opacity2,
+            translateY: translations[1],
+            opacity: opacitys[1],
             left: 0,
             right: 0
           }}
@@ -236,8 +232,8 @@ export const StickyScroll = ({
          {/**FULL STACK RHS TEXT & IMAGE 3 START */}
          <motion.div
           style={{
-            translateY: translateY3,
-            opacity: opacity3,
+            translateY: translations[2],
+            opacity: opacitys[2],
             left: 0,
             right: 0
           }}
@@ -282,6 +278,104 @@ export const StickyScroll = ({
         </motion.div>
         {/**FULL STACK RHS TEXT & IMAGE 3 END */}
 
+        {/**FULL STACK RHS TEXT & IMAGE 4 START */}
+        <motion.div
+          style={{
+            translateY: translations[3],
+            opacity: opacitys[3],
+            left: 0,
+            right: 0
+          }}
+          className="absolute mx-auto max-h-[60vh] my-8 w-[85vw] "
+        >
+          <div className="flex justify-start items-center gap-[4vw]">
+            <div className="min-w-[12vw]">
+
+            </div>
+
+            <div className=" min-w-[25vw] h-[60vh] flex items-center justify-center">
+              <motion.div  
+              whileInView={{scale:1.5}}
+              transition={{duration:0.5, delay: 0.15}}
+              className="">
+                <Image
+                  alt="Product Creation"
+                  src={CodingAdmin.src}
+                  width={1200}
+                  height={1200}
+                  className="my-auto overflow-hidden rounded-lg max-h-[60vh] max-w-[25vw]"
+                  >
+
+                </Image>
+              </motion.div>
+            </div>
+
+            <motion.div 
+            whileInView={{opacity: 1.0, translateX:0}}
+            initial={{opacity: 0.0, translateX:-200}}
+            transition={{duration:0.5, delay: 0.15}}
+            className=" mx-[6vw] text-dark max-w-[35vw]">
+              <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold">Building With Safety In Mind</h1>
+              <h1 className="text-lg lg:text-xl xl:text-2xl">Server Side Authentication / Data Handling / Bug Free Code</h1>
+            </motion.div>
+
+
+
+
+          </div>
+
+        </motion.div>
+        {/**FULL STACK RHS TEXT & IMAGE 4 END */}
+
+
+          {/**FULL STACK RHS TEXT & IMAGE 5 START */}
+         <motion.div
+          style={{
+            translateY: translations[4],
+            opacity: opacitys[4],
+            left: 0,
+            right: 0
+          }}
+          className="absolute mx-auto max-h-[60vh] my-8 w-[85vw] "
+        >
+          <div className="flex justify-start items-center gap-[4vw]">
+            <div className="min-w-[12vw]">
+
+            </div>
+
+            <div className=" min-w-[25vw] h-[60vh] flex items-center justify-center">
+              <motion.div  
+              whileInView={{scale:1.5}}
+              transition={{duration:0.5, delay: 0.15}}
+              className="">
+                <Image
+                  alt="Product Creation"
+                  src={CodingAdmin.src}
+                  width={1200}
+                  height={1200}
+                  className="my-auto overflow-hidden rounded-lg max-h-[60vh] max-w-[25vw]"
+                  >
+
+                </Image>
+              </motion.div>
+            </div>
+
+            <motion.div 
+            whileInView={{opacity: 1.0, translateX:0}}
+            initial={{opacity: 0.0, translateX:-200}}
+            transition={{duration:0.5, delay: 0.15}}
+            className=" mx-[6vw] text-dark max-w-[35vw]">
+              <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold">Building With Safety In Mind</h1>
+              <h1 className="text-lg lg:text-xl xl:text-2xl">Server Side Authentication / Data Handling / Bug Free Code</h1>
+            </motion.div>
+
+
+
+
+          </div>
+
+        </motion.div>
+        {/**FULL STACK RHS TEXT & IMAGE 5 END */}
         
         {false &&
 
